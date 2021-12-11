@@ -1,3 +1,4 @@
+using Core.Interfaces;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,6 +8,7 @@ string connString = builder.Configuration["ConnectionString:DefaultConnection"];
 
 // Add services to the container.
 
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddControllers();
 builder.Services.AddDbContext<StoreContext>(x =>
 {
