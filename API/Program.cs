@@ -20,6 +20,14 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<StoreContext>();
+    var loggerFactory = scope.ServiceProvider.GetRequiredService<ILoggerFactory>();
+    context.Database.Migrate();
+    await StoreContextSeed.SeedAsync(context, loggerFactory);
+}
+
 // ConfigurationManager configuration = builder.Configuration;
 
 // Configure the HTTP request pipeline.
@@ -37,6 +45,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
 
 app.Run();
 
